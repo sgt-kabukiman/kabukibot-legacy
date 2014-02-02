@@ -20,7 +20,14 @@ var db = new sqlite3.Database('test.sqlite3', sqlite3.OPEN_READWRITE | sqlite3.O
 	// db.run('CREATE TABLE IF NOT EXISTS channels (name VARCHAR(200), ')
 });
 
-var twitchClient = new TwitchClient(ircClient);
+var twitchClient = new TwitchClient(ircClient, {
+	ttl: {
+		turbo: 5000,
+		admin: 5000,
+		staff: 5000,
+		subscriber: 5000
+	}
+});
 
 twitchClient.addPlugin(new Core(db));
 twitchClient.addPlugin(new Dummy(console));
