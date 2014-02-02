@@ -1,6 +1,7 @@
 var
 	TwitchClient = require('./lib/TwitchClient.js'),
 	Channel      = require('./lib/Channel.js'),
+	Dummy        = require('./lib/Plugin/ConsoleOutput.js'),
 	irc          = require('irc'),
 	sqlite3      = require('sqlite3');
 
@@ -19,6 +20,9 @@ var db = new sqlite3.Database('test.sqlite3', sqlite3.OPEN_READWRITE | sqlite3.O
 });
 
 var twitchClient = new TwitchClient(ircClient);
+var dummy        = new Dummy(console);
+
+twitchClient.addPlugin(dummy);
 
 twitchClient.connect([
 	new Channel('...')
