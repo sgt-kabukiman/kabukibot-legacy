@@ -1,0 +1,10 @@
+{
+	"version": "1.0.0",
+	"dependencies": {
+		"irc": "0.3.*",
+		"sqlite3": "2.2.*"
+	},
+	"scripts": {
+		"start": "node bot.js"
+	}
+}
