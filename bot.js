@@ -8,12 +8,22 @@
  */
 
 var
+	// load core libraries
 	TwitchClient = require('./lib/TwitchClient.js'),
 	Channel      = require('./lib/Channel.js'),
-	Core         = require('./lib/Plugin/Core.js'),
-	Dummy        = require('./lib/Plugin/ConsoleOutput.js'),
-	irc          = require('irc'),
-	sqlite3      = require('sqlite3');
+
+	// load plugins
+	CorePlugin           = require('./lib/Plugin/Core.js'),
+	ConsoleOutputPlugin  = require('./lib/Plugin/ConsoleOutput.js'),
+	EatOwnMessagesPlugin = require('./lib/Plugin/EatOwnMessages.js'),
+	PingPlugin           = require('./lib/Plugin/Ping.js'),
+	JoinPlugin           = require('./lib/Plugin/Join.js'),
+
+	// load vendor libraries
+	irc     = require('irc'),
+	sqlite3 = require('sqlite3');
+
+////////////////////////////////////////////////////////////////////////////////
 
 var ircClient = new irc.Client('irc.twitch.tv', '...', {
 	showErrors: true,
@@ -35,11 +45,19 @@ var twitchClient = new TwitchClient(ircClient, {
 		admin: 5000,
 		staff: 5000,
 		subscriber: 5000
+	},
+	op: '...',
+	account: {
+		username: '...',
+		oauthToken: '...'
 	}
 });
 
-twitchClient.addPlugin(new Core(db));
-twitchClient.addPlugin(new Dummy(console));
+twitchClient.addPlugin(new CorePlugin(db));
+twitchClient.addPlugin(new ConsoleOutputPlugin(console));
+twitchClient.addPlugin(new EatOwnMessagesPlugin());
+twitchClient.addPlugin(new PingPlugin(console));
+twitchClient.addPlugin(new JoinPlugin(db));
 
 twitchClient.connect([
 	new Channel('...')
