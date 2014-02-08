@@ -11,6 +11,8 @@ var
 	// load core libraries
 	TwitchClient = require('./lib/TwitchClient.js'),
 	Channel      = require('./lib/Channel.js'),
+	Database     = require('./lib/Database.js'),
+	ACL          = require('./lib/ACL.js'),
 
 	// load plugins
 	CorePlugin           = require('./lib/Plugin/Core.js'),
@@ -20,8 +22,7 @@ var
 	JoinPlugin           = require('./lib/Plugin/Join.js'),
 
 	// load vendor libraries
-	irc     = require('irc'),
-	sqlite3 = require('sqlite3');
+	irc = require('irc');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -35,11 +36,10 @@ var ircClient = new irc.Client('irc.twitch.tv', '...', {
 	debug: false
 });
 
-var db = new sqlite3.Database('test.sqlite3', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, function() {
-	// db.run('CREATE TABLE IF NOT EXISTS channels (name VARCHAR(200), ')
-});
+var db  = new Database('test.sqlite3');
+var acl = new ACL(db);
 
-var twitchClient = new TwitchClient(ircClient, {
+var twitchClient = new TwitchClient(ircClient, db, acl, {
 	ttl: {
 		turbo: 5000,
 		admin: 5000,
