@@ -9,10 +9,12 @@
 
 var
 	// load core libraries
-	TwitchClient = require('./lib/TwitchClient.js'),
-	Channel      = require('./lib/Channel.js'),
-	Database     = require('./lib/Database.js'),
-	ACL          = require('./lib/ACL.js'),
+	TwitchClient   = require('./lib/TwitchClient.js'),
+	Channel        = require('./lib/Channel.js'),
+	Database       = require('./lib/Database.js'),
+	ACL            = require('./lib/ACL.js'),
+	ChannelManager = require('./lib/ChannelManager.js'),
+	Log            = require('./lib/Log.js'),
 
 	// load plugins
 	CorePlugin           = require('./lib/Plugin/Core.js'),
@@ -36,10 +38,12 @@ var ircClient = new irc.Client('irc.twitch.tv', '...', {
 	debug: false
 });
 
-var db  = new Database('test.sqlite3');
-var acl = new ACL(db);
+var log  = new Log(Log.DEBUG, 'main');
+var db   = new Database('test.sqlite3', log);
+var acl  = new ACL(db, log);
+var mngr = new ChannelManager(db, log);
 
-var twitchClient = new TwitchClient(ircClient, db, acl, {
+var twitchClient = new TwitchClient(ircClient, db, acl, mngr, log, {
 	ttl: {
 		turbo: 5000,
 		admin: 5000,
@@ -59,6 +63,4 @@ twitchClient.addPlugin(new EatOwnMessagesPlugin());
 twitchClient.addPlugin(new PingPlugin(console));
 twitchClient.addPlugin(new JoinPlugin(db));
 
-twitchClient.connect([
-	new Channel('...')
-]);
+twitchClient.connect();
