@@ -1,2 +1,5 @@
-config.json
+syntax:glob
 node_modules
+config.js
+*.sqlite
+*.sqlite3

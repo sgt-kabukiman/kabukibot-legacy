@@ -8,59 +8,29 @@
  */
 
 var
+	// parse argv
+	argv = require('minimist')(process.argv.slice(2)),
+
+	// load config
+	config = require('./config.js'),
+
 	// load core libraries
-	TwitchClient   = require('./lib/TwitchClient.js'),
-	Channel        = require('./lib/Channel.js'),
-	Database       = require('./lib/Database.js'),
-	ACL            = require('./lib/ACL.js'),
-	ChannelManager = require('./lib/ChannelManager.js'),
-	Log            = require('./lib/Log.js'),
+	twitch = require('./lib/TwitchClient.js'),
+	log    = require('./lib/Log.js'),
 
 	// load plugins
-	CorePlugin           = require('./lib/Plugin/Core.js'),
-	ConsoleOutputPlugin  = require('./lib/Plugin/ConsoleOutput.js'),
-	EatOwnMessagesPlugin = require('./lib/Plugin/EatOwnMessages.js'),
-	PingPlugin           = require('./lib/Plugin/Ping.js'),
-	JoinPlugin           = require('./lib/Plugin/Join.js'),
-
-	// load vendor libraries
-	irc = require('irc');
+	CorePlugin          = require('./lib/Plugin/Core.js'),
+	ConsoleOutputPlugin = require('./lib/Plugin/ConsoleOutput.js'),
+	PingPlugin          = require('./lib/Plugin/Ping.js'),
+	JoinPlugin          = require('./lib/Plugin/Join.js');
 
 ////////////////////////////////////////////////////////////////////////////////
 
-var ircClient = new irc.Client('irc.twitch.tv', '...', {
-	showErrors: true,
-	autoConnect: false,
-	floodProtection: true,
-	floodProtectionDelay: 1000, // 1 sec
-	password: '...',
-	realName: '...',
-	debug: false
-});
+var twitchClient = twitch.getClient(config, 'debug' in argv ? log.DEBUG : ('warning' in argv ? log.WARNING : log.INFO));
 
-var log  = new Log(Log.DEBUG, 'main');
-var db   = new Database('test.sqlite3', log);
-var acl  = new ACL(db, log);
-var mngr = new ChannelManager(db, log);
+twitchClient.addPlugin(new CorePlugin());
+twitchClient.addPlugin(new ConsoleOutputPlugin());
+twitchClient.addPlugin(new PingPlugin());
+twitchClient.addPlugin(new JoinPlugin());
 
-var twitchClient = new TwitchClient(ircClient, db, acl, mngr, log, {
-	ttl: {
-		turbo: 5000,
-		admin: 5000,
-		staff: 5000,
-		subscriber: 5000
-	},
-	op: '...',
-	account: {
-		username: '...',
-		oauthToken: '...'
-	}
-});
-
-twitchClient.addPlugin(new CorePlugin(db));
-twitchClient.addPlugin(new ConsoleOutputPlugin(console));
-twitchClient.addPlugin(new EatOwnMessagesPlugin());
-twitchClient.addPlugin(new PingPlugin(console));
-twitchClient.addPlugin(new JoinPlugin(db));
-
-twitchClient.connect();
+twitchClient.setup().connect();
