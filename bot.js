@@ -15,8 +15,8 @@ var
 	config = require('./config.js'),
 
 	// load core libraries
-	twitch = require('./lib/TwitchClient.js'),
-	log    = require('./lib/Log.js'),
+	bot = require('./lib/Kabukibot.js'),
+	log = require('./lib/Log.js'),
 
 	// load plugins
 	CorePlugin          = require('./lib/Plugin/Core.js'),
@@ -26,11 +26,11 @@ var
 
 ////////////////////////////////////////////////////////////////////////////////
 
-var twitchClient = twitch.getClient(config, 'debug' in argv ? log.DEBUG : ('warning' in argv ? log.WARNING : log.INFO));
+var kabukibot = bot.getBot(config, 'debug' in argv ? log.DEBUG : ('warning' in argv ? log.WARNING : log.INFO));
 
-twitchClient.addPlugin(new CorePlugin());
-twitchClient.addPlugin(new ConsoleOutputPlugin());
-twitchClient.addPlugin(new PingPlugin());
-twitchClient.addPlugin(new JoinPlugin());
+kabukibot.addPlugin(new CorePlugin());
+kabukibot.addPlugin(new ConsoleOutputPlugin());
+kabukibot.addPlugin(new PingPlugin());
+kabukibot.addPlugin(new JoinPlugin());
 
-twitchClient.setup().connect();
+kabukibot.setup().run();

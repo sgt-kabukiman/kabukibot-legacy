@@ -28,6 +28,12 @@ module.exports = {
 	// internal values
 	// In general there is no reason to change these.
 
+	// IRC host
+	irc: {
+		host: 'irc.twitch.tv',
+		port: 6667
+	},
+
 	// SPECIALUSER time-to-live
 	// Determines how many milliseconds a SPECIALUSER line may be old to consider
 	// it valid when receiving a text line (i.e. time between SPECIALUSER and
