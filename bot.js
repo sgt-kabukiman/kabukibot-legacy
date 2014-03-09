@@ -27,7 +27,8 @@ var
 	PluginControlPlugin = require('./lib/Plugin/PluginControl.js'),
 
 	// load content-providing plugins (these are optional)
-	SDAContentPlugin = require('./lib/Plugin/Content/SDA.js');
+	SDAContentPlugin = require('./lib/Plugin/Content/SDA.js')
+	ESAContentPlugin = require('./lib/Plugin/Content/ESA.js');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -40,5 +41,6 @@ bot
 	.addPlugin(new ACLPlugin())
 	.addPlugin(new PluginControlPlugin())
 	.addPlugin(new SDAContentPlugin())
+	.addPlugin(new ESAContentPlugin())
 	.setup()
 	.run();
