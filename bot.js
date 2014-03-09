@@ -27,6 +27,7 @@ var
 	PluginControlPlugin = require('./lib/Plugin/PluginControl.js'),
 
 	// load content-providing plugins (these are optional)
+	GTAContentPlugin = require('./lib/Plugin/Content/GTA.js')
 	SDAContentPlugin = require('./lib/Plugin/Content/SDA.js')
 	ESAContentPlugin = require('./lib/Plugin/Content/ESA.js');
 
@@ -40,6 +41,7 @@ bot
 	.addPlugin(new JoinPlugin())
 	.addPlugin(new ACLPlugin())
 	.addPlugin(new PluginControlPlugin())
+	.addPlugin(new GTAContentPlugin())
 	.addPlugin(new SDAContentPlugin())
 	.addPlugin(new ESAContentPlugin())
 	.setup()
