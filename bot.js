@@ -18,21 +18,27 @@ var
 	bot = require('./lib/Kabukibot.js'),
 	log = require('./lib/Log.js'),
 
-	// load plugins
+	// load core plugins (required for running the bot)
 	CorePlugin          = require('./lib/Plugin/Core.js'),
 	ConsoleOutputPlugin = require('./lib/Plugin/ConsoleOutput.js'),
 	PingPlugin          = require('./lib/Plugin/Ping.js'),
 	JoinPlugin          = require('./lib/Plugin/Join.js'),
-	ACLPlugin           = require('./lib/Plugin/ACL.js');
+	ACLPlugin           = require('./lib/Plugin/ACL.js'),
+	PluginControlPlugin = require('./lib/Plugin/PluginControl.js'),
+
+	// load content-providing plugins (these are optional)
+	SDAContentPlugin = require('./lib/Plugin/Content/SDA.js');
 
 ////////////////////////////////////////////////////////////////////////////////
 
-var kabukibot = bot.getBot(config, 'debug' in argv ? log.DEBUG : ('warning' in argv ? log.WARNING : log.INFO));
-
-kabukibot.addPlugin(new CorePlugin());
-kabukibot.addPlugin(new ConsoleOutputPlugin());
-kabukibot.addPlugin(new PingPlugin());
-kabukibot.addPlugin(new JoinPlugin());
-kabukibot.addPlugin(new ACLPlugin());
-
-kabukibot.setup().run();
+bot
+	.getBot(config, 'debug' in argv ? log.DEBUG : ('warning' in argv ? log.WARNING : log.INFO))
+	.addPlugin(new CorePlugin())
+	.addPlugin(new ConsoleOutputPlugin())
+	.addPlugin(new PingPlugin())
+	.addPlugin(new JoinPlugin())
+	.addPlugin(new ACLPlugin())
+	.addPlugin(new PluginControlPlugin())
+	.addPlugin(new SDAContentPlugin())
+	.setup()
+	.run();
