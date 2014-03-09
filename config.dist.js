@@ -23,7 +23,7 @@ module.exports = {
 	// database file
 	// This file contains all the permanent data, like joined channels, set
 	// permissions, created commands etc.
-	database: 'kabukibot.sqlite3',
+	database: 'mybotdatabase.sqlite3',
 
 	// command prefix
 	// This is the prefix that is put in front of all global commands, like ![prefix]join
