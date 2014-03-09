@@ -22,7 +22,8 @@ var
 	CorePlugin          = require('./lib/Plugin/Core.js'),
 	ConsoleOutputPlugin = require('./lib/Plugin/ConsoleOutput.js'),
 	PingPlugin          = require('./lib/Plugin/Ping.js'),
-	JoinPlugin          = require('./lib/Plugin/Join.js');
+	JoinPlugin          = require('./lib/Plugin/Join.js'),
+	ACLPlugin           = require('./lib/Plugin/ACL.js');
 
 ////////////////////////////////////////////////////////////////////////////////
 
@@ -32,5 +33,6 @@ kabukibot.addPlugin(new CorePlugin());
 kabukibot.addPlugin(new ConsoleOutputPlugin());
 kabukibot.addPlugin(new PingPlugin());
 kabukibot.addPlugin(new JoinPlugin());
+kabukibot.addPlugin(new ACLPlugin());
 
 kabukibot.setup().run();
