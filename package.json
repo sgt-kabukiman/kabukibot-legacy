@@ -3,7 +3,8 @@
 	"dependencies": {
 		"irc": "0.3.*",
 		"sqlite3": "2.2.*",
-		"minimist": "0.*"
+		"minimist": "0.*",
+		"mustache": "0.8.*"
 	},
 	"scripts": {
 		"start": "node bot.js"
