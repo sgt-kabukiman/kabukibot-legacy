@@ -30,6 +30,7 @@ var
 	DictionaryControlPlugin = require('./lib/Plugin/DictionaryControl.js'),
 	DomainBanPlugin         = require('./lib/Plugin/DomainBan.js'),
 	CustomCommandsPlugin    = require('./lib/Plugin/CustomCommands.js'),
+	EmoteCounterPlugin      = require('./lib/Plugin/EmoteCounter/Plugin.js'),
 	GTAContentPlugin        = require('./lib/Plugin/Content/GTA.js'),
 	SDAContentPlugin        = require('./lib/Plugin/Content/SDA.js'),
 	ESAContentPlugin        = require('./lib/Plugin/Content/ESA.js');
@@ -46,9 +47,10 @@ bot
 	.addPlugin(new PluginControlPlugin())
 	.addPlugin(new DictionaryControlPlugin())
 	.addPlugin(new DomainBanPlugin())
+	.addPlugin(new EmoteCounterPlugin())
+	.addPlugin(new CustomCommandsPlugin()) // should preceed only simple content plugins
 	.addPlugin(new GTAContentPlugin())
 	.addPlugin(new SDAContentPlugin())
 	.addPlugin(new ESAContentPlugin())
-	.addPlugin(new CustomCommandsPlugin()) // should always be last
 	.setup()
 	.run();
