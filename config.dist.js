@@ -1,7 +1,7 @@
 /*
   Kabukibot Configuration
 
-  !!! Copy this file to `config.json` and only change that file, never this one,
+  !!! Copy this file to `config.js` and only change that file, never this one,
       or else you will get conflicts when updating.
  */
 
@@ -20,10 +20,25 @@ module.exports = {
 	// godlike power over the bot.
 	op: 'botmaster',
 
-	// database file
-	// This file contains all the permanent data, like joined channels, set
-	// permissions, created commands etc.
-	database: 'mybotdatabase.sqlite3',
+	// database configuration
+	database: {
+		// use either 'sqlite' or 'mysql'
+		driver: 'sqlite',
+
+		// the SQLite database file to use if driver is 'sqlite'
+		sqlite: {
+			filename: 'kabukibot.sqlite3'
+		},
+
+		// connection configuration for MySQL/MariaDB (only needed when driver is 'mysql')
+		// see https://github.com/felixge/node-mysql#connection-options
+		mysql: {
+			host:     'localhost',
+			user:     'mydbuser',
+			password: 'mydbpass',
+			database: 'kabukibot'
+		}
+	},
 
 	// command prefix
 	// This is the prefix that is put in front of all global commands, like ![prefix]join

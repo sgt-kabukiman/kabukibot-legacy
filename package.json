@@ -3,6 +3,7 @@
 	"dependencies": {
 		"irc": "0.3.*",
 		"sqlite3": "2.2.*",
+		"mysql": "2.1.*",
 		"minimist": "0.*",
 		"mustache": "0.8.*",
 		"client-http": "0.0.*",
