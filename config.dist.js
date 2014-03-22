@@ -18,7 +18,7 @@ module.exports = {
 	// bot operator
 	// This is the user that can perform administrative tasks and has in general
 	// godlike power over the bot.
-	op: 'botmaster',
+	op: '<your username here>',
 
 	// database configuration
 	database: {
