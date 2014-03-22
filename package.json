@@ -5,7 +5,8 @@
 		"sqlite3": "2.2.*",
 		"minimist": "0.*",
 		"mustache": "0.8.*",
-		"client-http": "0.0.*"
+		"client-http": "0.0.*",
+		"numeral": "1.5.*"
 	},
 	"scripts": {
 		"start": "node bot.js"
