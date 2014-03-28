@@ -27,11 +27,13 @@ var
 	PluginControlPlugin = require('./lib/Plugin/PluginControl.js'),
 
 	// load content-providing and other plugins (these are optional)
+	EchoPlugin              = require('./lib/Plugin/Echo.js'),
 	DictionaryControlPlugin = require('./lib/Plugin/DictionaryControl.js'),
 	DomainBanPlugin         = require('./lib/Plugin/DomainBan.js'),
 	CustomCommandsPlugin    = require('./lib/Plugin/CustomCommands.js'),
 	EmoteCounterPlugin      = require('./lib/Plugin/EmoteCounter/Plugin.js'),
 	HighlightsPlugin        = require('./lib/Plugin/Highlights.js'),
+	HangManPlugin           = require('./lib/Plugin/HangMan.js'),
 	GTAContentPlugin        = require('./lib/Plugin/Content/GTA.js'),
 	SDAContentPlugin        = require('./lib/Plugin/Content/SDA.js'),
 	ESAContentPlugin        = require('./lib/Plugin/Content/ESA.js'),
@@ -47,10 +49,12 @@ bot
 	.addPlugin(new JoinPlugin())
 	.addPlugin(new ACLPlugin())
 	.addPlugin(new PluginControlPlugin())
+	.addPlugin(new EchoPlugin())
 	.addPlugin(new DictionaryControlPlugin())
 	.addPlugin(new DomainBanPlugin())
 	.addPlugin(new EmoteCounterPlugin())
 	.addPlugin(new HighlightsPlugin())
+	.addPlugin(new HangManPlugin())
 	.addPlugin(new CustomCommandsPlugin()) // should preceed only simple content plugins
 	.addPlugin(new GTAContentPlugin())
 	.addPlugin(new SDAContentPlugin())
