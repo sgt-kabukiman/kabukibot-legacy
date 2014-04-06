@@ -40,6 +40,13 @@ module.exports = {
 		}
 	},
 
+	// Sentry configuration
+	// Kabukibot can send all unexpected failures to Sentry.
+	// If you do not know what this is or how to use it, leave this field blank.
+	sentry: {
+		dsn: ''
+	},
+
 	// command prefix
 	// This is the prefix that is put in front of all global commands, like ![prefix]join
 	// or ![prefix]allow. Custom commands and those provided by content packs are not affected.
