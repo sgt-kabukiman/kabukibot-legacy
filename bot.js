@@ -28,6 +28,7 @@ var
 
 	// load content-providing and other plugins (these are optional)
 	EchoPlugin              = require('./lib/Plugin/Echo.js'),
+	SysInfoPlugin           = require('./lib/Plugin/SysInfo.js'),
 	DictionaryControlPlugin = require('./lib/Plugin/DictionaryControl.js'),
 	DomainBanPlugin         = require('./lib/Plugin/DomainBan.js'),
 	CustomCommandsPlugin    = require('./lib/Plugin/CustomCommands.js'),
@@ -50,6 +51,7 @@ bot
 	.addPlugin(new ACLPlugin())
 	.addPlugin(new PluginControlPlugin())
 	.addPlugin(new EchoPlugin())
+	.addPlugin(new SysInfoPlugin())
 	.addPlugin(new DictionaryControlPlugin())
 	.addPlugin(new DomainBanPlugin())
 	.addPlugin(new EmoteCounterPlugin())
