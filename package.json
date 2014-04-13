@@ -9,6 +9,7 @@
 		"client-http": "0.0.*",
 		"numeral": "1.5.*",
 		"rot": "0.1.*",
+		"humanize": "0.0.*",
 		"raven": "0.6.*"
 	},
 	"scripts": {
