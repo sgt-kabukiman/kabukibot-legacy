@@ -40,6 +40,51 @@ module.exports = {
 		}
 	},
 
+	// plugin configuration
+	plugins: {
+		srr: {
+			interval: 15*60,
+			mapping: {
+				'Grand Theft Auto': {
+					'Grand Theft Auto III': {
+						'Any%':         'gta_wr_iii_any',
+						'All Missions': 'gta_wr_iii_mis',
+						'100%':         'gta_wr_iii_100'
+					},
+
+					'Grand Theft Auto: Vice City': {
+						'Any%':         'gta_wr_vc_any',
+						'All Missions': 'gta_wr_vc_mis',
+						'100%':         'gta_wr_vc_100'
+					},
+
+					'Grand Theft Auto: San Andreas': {
+						'Any%': 'gta_wr_sa_any',
+						'100%': 'gta_wr_sa_100'
+					},
+
+					'Grand Theft Auto: Liberty City Stories': {
+						'Any%': 'gta_wr_lcs_any'
+					},
+
+					'Grand Theft Auto: Vice City Stories': {
+						'Any%': 'gta_wr_vcs_any'
+					},
+
+					'Grand Theft Auto IV': {
+						'Any%':     'gta_wr_iv_any',
+						'Classic%': 'gta_wr_iv_classic'
+					},
+
+					'Grand Theft Auto V': {
+						'Any%':     'gta_wr_v_any',
+						'Classic%': 'gta_wr_v_classic'
+					}
+				}
+			}
+		}
+	},
+
 	// Sentry configuration
 	// Kabukibot can send all unexpected failures to Sentry.
 	// If you do not know what this is or how to use it, leave this field blank.

@@ -27,6 +27,7 @@ var
 	PluginControlPlugin = require('./lib/Plugin/PluginControl.js'),
 
 	// load content-providing and other plugins (these are optional)
+	SRRPlugin               = require('./lib/Plugin/SRR.js'),
 	EchoPlugin              = require('./lib/Plugin/Echo.js'),
 	SysInfoPlugin           = require('./lib/Plugin/SysInfo.js'),
 	DictionaryControlPlugin = require('./lib/Plugin/DictionaryControl.js'),
@@ -50,6 +51,7 @@ bot
 	.addPlugin(new JoinPlugin())
 	.addPlugin(new ACLPlugin())
 	.addPlugin(new PluginControlPlugin())
+	.addPlugin(new SRRPlugin())
 	.addPlugin(new EchoPlugin())
 	.addPlugin(new SysInfoPlugin())
 	.addPlugin(new DictionaryControlPlugin())
