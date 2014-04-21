@@ -106,16 +106,5 @@ module.exports = {
 	irc: {
 		host: 'irc.twitch.tv',
 		port: 6667
-	},
-
-	// SPECIALUSER time-to-live
-	// Determines how many milliseconds a SPECIALUSER line may be old to consider
-	// it valid when receiving a text line (i.e. time between SPECIALUSER and
-	// text must be smaller than these values)
-	ttl: {
-		turbo: 5000,
-		admin: 5000,
-		staff: 5000,
-		subscriber: 5000
 	}
 };
