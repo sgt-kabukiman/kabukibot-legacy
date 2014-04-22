@@ -4,3 +4,4 @@ config.js
 *.sqlite
 *.sqlite3
 version
+logs/*
