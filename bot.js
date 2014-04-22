@@ -20,13 +20,14 @@ var
 
 	// load core plugins (required for running the bot)
 	CorePlugin          = require('./lib/Plugin/Core.js'),
-	ConsoleOutputPlugin = require('./lib/Plugin/ConsoleOutput.js'),
-	PingPlugin          = require('./lib/Plugin/Ping.js'),
 	JoinPlugin          = require('./lib/Plugin/Join.js'),
 	ACLPlugin           = require('./lib/Plugin/ACL.js'),
 	PluginControlPlugin = require('./lib/Plugin/PluginControl.js'),
 
 	// load content-providing and other plugins (these are optional)
+	ConsoleOutputPlugin     = require('./lib/Plugin/ConsoleOutput.js'),
+	PingPlugin              = require('./lib/Plugin/Ping.js'),
+	LogPlugin               = require('./lib/Plugin/Log/Plugin.js'),
 	SRRPlugin               = require('./lib/Plugin/SRR.js'),
 	EchoPlugin              = require('./lib/Plugin/Echo.js'),
 	SysInfoPlugin           = require('./lib/Plugin/SysInfo.js'),
@@ -46,6 +47,7 @@ var
 bot
 	.getBot(config, 'debug' in argv ? log.DEBUG : ('warning' in argv ? log.WARNING : log.INFO))
 	.addPlugin(new CorePlugin())
+	.addPlugin(new LogPlugin())
 	.addPlugin(new ConsoleOutputPlugin())
 	.addPlugin(new PingPlugin())
 	.addPlugin(new JoinPlugin())

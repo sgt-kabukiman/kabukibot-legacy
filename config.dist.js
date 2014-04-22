@@ -42,6 +42,17 @@ module.exports = {
 
 	// plugin configuration
 	plugins: {
+		log: {
+			// Set the adapter to either 'file' or 'database'. Do NOT use database if you are
+			// using SQLite, because logging is write-intensive and you don't want all that I/O
+			// on your machine.
+			adapter: 'file',
+
+			// If the adapter is 'file', set the full path to the directory in which the logfiles
+			// shall be place. Make sure this directory exists!
+			directory: '/full/path/to/the/log/dir'
+		},
+
 		srr: {
 			interval: 15*60,
 			mapping: {
