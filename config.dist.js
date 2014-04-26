@@ -42,6 +42,12 @@ module.exports = {
 
 	// plugin configuration
 	plugins: {
+		highlights: {
+			maxPerChannel: 50,  // max number of highlights per channel
+			cooldown: 60,       // min time between highlights in seconds
+			maxAge: 2*7*24*3600 // max age in seconds of a highlight before it's purged automatically
+		},
+
 		log: {
 			// Set the adapter to either 'file' or 'database'. Do NOT use database if you are
 			// using SQLite, because logging is write-intensive and you don't want all that I/O
