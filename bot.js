@@ -11,9 +11,6 @@ var
 	// parse argv
 	argv = require('minimist')(process.argv.slice(2)),
 
-	// load config
-	config = require('./config.js'),
-
 	// load core libraries
 	bot = require('./lib/Kabukibot.js'),
 	log = require('./lib/Log.js'),
@@ -42,6 +39,20 @@ var
 	SDAContentPlugin        = require('./lib/Plugin/Content/SDA.js'),
 	ESAContentPlugin        = require('./lib/Plugin/Content/ESA.js'),
 	ChattyContentPlugin     = require('./lib/Plugin/Content/Chatty.js');
+
+////////////////////////// //////////////////////////////////////////////////////
+// load config
+
+var
+	fs         = require('fs'),
+	path       = require('path'),
+	configFile = path.resolve('config' in argv ? argv.config : 'config.js');
+
+if (!fs.existsSync(configFile)) {
+	throw 'Config file "' + configFile + '" could not be found.';
+}
+
+var config = require(configFile);
 
 ////////////////////////////////////////////////////////////////////////////////
 
