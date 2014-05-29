@@ -80,7 +80,7 @@ exports.testSecondsToTime = function(test) {
 		[       1,                  '01s',                                   '1 second'],
 		[       2,                  '02s',                                  '2 seconds'],
 		[      59,                  '59s',                                 '59 seconds'],
-		[    59.5,                  '59s',                                 '59 seconds'], // properly truncate flots?
+		[    59.5,                  '59s',                                 '59 seconds'], // properly truncate floats?
 		[      60,              '01m:00s',                                   '1 minute'],
 		[     122,              '02m:02s',                    '2 minutes and 2 seconds'],
 		[  521100,      '06d:00h:45m:00s',                      '6 days and 45 minutes'],
