@@ -17,35 +17,35 @@ function assertMessage(test, msg, chan, cmd, args, username) {
 }
 
 exports.testParseClearchat = function(test) {
-	var msg = TM.fromIrcMessage(null, 'CLEARCHAT');
+	var msg = TM.fromIrcMessage(null, 'jtv', 'CLEARCHAT');
 	assertMessage(test, msg, null, 'clearchat', [], null);
 
 	test.done();
 };
 
 exports.testParseTimeout = function(test) {
-	var msg = TM.fromIrcMessage(null, 'CLEARCHAT a_username');
+	var msg = TM.fromIrcMessage(null, 'jtv', 'CLEARCHAT a_username');
 	assertMessage(test, msg, null, 'clearchat', ['a_username'], 'a_username');
 
 	test.done();
 };
 
 exports.testParseSpecialuser = function(test) {
-	var msg = TM.fromIrcMessage(null, 'SPECIALUSER a_username subscriber');
+	var msg = TM.fromIrcMessage(null, 'jtv', 'SPECIALUSER a_username subscriber');
 	assertMessage(test, msg, null, 'specialuser', ['a_username', 'subscriber'], 'a_username');
 
 	test.done();
 };
 
 exports.testParseUsercolor = function(test) {
-	var msg = TM.fromIrcMessage(null, 'USERCOLOR a_username #123456');
+	var msg = TM.fromIrcMessage(null, 'jtv', 'USERCOLOR a_username #123456');
 	assertMessage(test, msg, null, 'usercolor', ['a_username', '#123456'], 'a_username');
 
 	test.done();
 };
 
 exports.testParseEmoteset = function(test) {
-	var msg = TM.fromIrcMessage(null, 'EMOTESET a_username [12,34,56]');
+	var msg = TM.fromIrcMessage(null, 'jtv', 'EMOTESET a_username [12,34,56]');
 	assertMessage(test, msg, null, 'emoteset', ['a_username', '[12,34,56]'], 'a_username');
 
 	test.done();
@@ -53,8 +53,22 @@ exports.testParseEmoteset = function(test) {
 
 exports.testParseUnknown = function(test) {
 	// only the first 2 arguments are relevant and being parsed
-	var msg = TM.fromIrcMessage(null, 'FUNKY a_username #123456 something_else foo,bar');
+	var msg = TM.fromIrcMessage(null, 'jtv', 'FUNKY a_username #123456 something_else foo,bar');
 	assertMessage(test, msg, null, 'funky', ['a_username', '#123456'], null);
+
+	test.done();
+};
+
+exports.testParseSubscription = function(test) {
+	var msg = TM.fromIrcMessage(null, 'twitchnotify', 'a_cool_testuser just subscribed!');
+	assertMessage(test, msg, null, 'subscriber', ['a_cool_testuser'], 'a_cool_testuser');
+
+	test.done();
+};
+
+exports.testParseOtherTwitchNotifyMessage = function(test) {
+	var msg = TM.fromIrcMessage(null, 'twitchnotify', 'This room is now in subscribers-only mode.');
+	assertMessage(test, msg, null, '???', [], null);
 
 	test.done();
 };
