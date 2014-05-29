@@ -7,5 +7,5 @@
  * http://www.opensource.org/licenses/mit-license.php
  */
 
-var reporter = require('nodeunit').reporters.default;
+var reporter = require('nodeunit').reporters.nested;
 reporter.run(['tests']);
