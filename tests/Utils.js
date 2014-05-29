@@ -10,8 +10,8 @@
 var Utils = require('./../lib/Utils.js');
 
 exports.testDateToSQL = function(test) {
-	test.deepEqual(Utils.dateToSQL(new Date('2014-01-01 UTC')),          '2014-01-01 00:00:00');
-	test.deepEqual(Utils.dateToSQL(new Date('2014-01-01 01:20:07 UTC')), '2014-01-01 01:20:07');
+	test.strictEqual(Utils.dateToSQL(new Date('2014-01-01 UTC')),          '2014-01-01 00:00:00');
+	test.strictEqual(Utils.dateToSQL(new Date('2014-01-01 01:20:07 UTC')), '2014-01-01 01:20:07');
 	test.done();
 };
 
@@ -24,7 +24,7 @@ exports.testHumanJoin = function(test) {
 	];
 
 	for (var i = 0; i < tests.length; ++i) {
-		test.deepEqual(Utils.humanJoin(tests[i][0]), tests[i][1]);
+		test.strictEqual(Utils.humanJoin(tests[i][0]), tests[i][1]);
 	}
 
 	test.done();
@@ -39,7 +39,7 @@ exports.testIsEmptyObject = function(test) {
 	];
 
 	for (var i = 0; i < tests.length; ++i) {
-		test.deepEqual(Utils.isEmptyObject(tests[i][0]), tests[i][1]);
+		test.strictEqual(Utils.isEmptyObject(tests[i][0]), tests[i][1]);
 	}
 
 	test.done();
@@ -68,7 +68,7 @@ exports.testRandomItem = function(test) {
 	];
 
 	for (var i = 0; i < tests.length; ++i) {
-		test.deepEqual(Utils.randomItem(tests[i][0]), tests[i][1]);
+		test.strictEqual(Utils.randomItem(tests[i][0]), tests[i][1]);
 	}
 
 	test.done();
@@ -89,8 +89,8 @@ exports.testSecondsToTime = function(test) {
 	];
 
 	for (var i = 0; i < tests.length; ++i) {
-		test.deepEqual(Utils.secondsToTime(tests[i][0], true), tests[i][1]);
-		test.deepEqual(Utils.secondsToTime(tests[i][0], false), tests[i][2]);
+		test.strictEqual(Utils.secondsToTime(tests[i][0], true), tests[i][1]);
+		test.strictEqual(Utils.secondsToTime(tests[i][0], false), tests[i][2]);
 	}
 
 	test.done();
@@ -104,7 +104,7 @@ exports.testSecondsToRunTime = function(test) {
 	];
 
 	for (var i = 0; i < tests.length; ++i) {
-		test.deepEqual(Utils.secondsToRunTime(tests[i][0]), tests[i][1]);
+		test.strictEqual(Utils.secondsToRunTime(tests[i][0]), tests[i][1]);
 	}
 
 	test.done();

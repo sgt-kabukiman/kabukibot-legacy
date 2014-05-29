@@ -10,10 +10,11 @@
 var TM = require('./../lib/TwitchMessage.js');
 
 function assertMessage(test, msg, chan, cmd, args, username) {
-	test.deepEqual(msg.getChannel(),  chan);
-	test.deepEqual(msg.getCommand(),  cmd);
-	test.deepEqual(msg.getArgs(),     args);
-	test.deepEqual(msg.getUsername(), username);
+	test.deepEqual(msg.getChannel(), chan);
+	test.deepEqual(msg.getArgs(),    args);
+
+	test.strictEqual(msg.getCommand(),  cmd);
+	test.strictEqual(msg.getUsername(), username);
 }
 
 exports.testParseClearchat = function(test) {

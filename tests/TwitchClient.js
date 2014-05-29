@@ -57,9 +57,9 @@ exports.testConnecting = function(test) {
 	test.expect(4);
 
 	tc.dispatcher.on('connect', function(arg) {
-		test.deepEqual(arg, tc);
+		test.strictEqual(arg, tc);
+		test.strictEqual(tc.log.logged.length, 2);
 		test.deepEqual(tc.getChannels(), []);
-		test.deepEqual(tc.log.logged.length, 2);
 		test.deepEqual(tc.irc.written, ["TWITCHCLIENT 3\r\n"]);
 		test.done();
 	});
@@ -74,14 +74,14 @@ exports.testJoinChannel = function(test) {
 	test.expect(5);
 
 	tc.dispatcher.on('join', function(joined, self) {
-		test.deepEqual(joined, channel);
-		test.deepEqual(self, tc);
+		test.strictEqual(joined, channel);
+		test.strictEqual(self, tc);
+		test.strictEqual(tc.log.logged.length, 1);
 		test.deepEqual(tc.getChannels(), {testchannel: joined});
-		test.deepEqual(tc.log.logged.length, 1);
 
 		// try to join it once again (use a new object to exclude the possibility
 		// of the TwitchClient checking instance identity)
-		test.deepEqual(tc.join(new Channel('testchannel')), false);
+		test.strictEqual(tc.join(new Channel('testchannel')), false);
 
 		test.done();
 	});
@@ -96,7 +96,7 @@ exports.testPartChannel = function(test) {
 	test.expect(6);
 
 	// this should not work yet
-	test.deepEqual(tc.part(channel), false);
+	test.strictEqual(tc.part(channel), false);
 
 	// leave immediately after joining
 	tc.dispatcher.on('join', function(parted, self) {
@@ -105,13 +105,13 @@ exports.testPartChannel = function(test) {
 
 	// this is the stuff we actually want to assert
 	tc.dispatcher.on('part', function(parted, self) {
-		test.deepEqual(parted, channel);
-		test.deepEqual(self, tc);
+		test.strictEqual(parted, channel);
+		test.strictEqual(self, tc);
+		test.strictEqual(tc.log.logged.length, 2); // 1x "joined..." + 1x "parted..."
 		test.deepEqual(tc.getChannels(), []);
-		test.deepEqual(tc.log.logged.length, 2); // 1x "joined..." + 1x "parted..."
 
 		// parting again should not be possible
-		test.deepEqual(tc.part(new Channel('testchannel')), false);
+		test.strictEqual(tc.part(new Channel('testchannel')), false);
 
 		test.done();
 	});
@@ -215,27 +215,99 @@ exports.testModeChanges = function(test) {
 	test.done();
 };
 
-/*
-exports.testFiringEvents = function(test) {
-	var tc     = buildTwitchClient();
-	var events = [];
+exports.testProcessMessage = function(test) {
+	var tc          = buildTwitchClient();
+	var events      = [];
+	var testChannel = new Channel('mychan');
+	var testUser    = new User('testee', testChannel);
+	var tests       = [
+		[new TextMessage(testChannel, testUser, 'my message'), ['message', 'text',   'command', 'processed']],
+		[new TwitchMessage(testChannel, 'subscriber', []),     ['message', 'twitch',            'processed']],
+		[new ModeMessage(testChannel, '+o', testUser),         ['message', 'mode',              'processed']],
+	];
 
-	tc.channels['mychan'] = new Channel('mychan');
-
-	tc.process = function(type, channel) {
-		var args = Array.prototype.slice.call(arguments, 2);
-
-		events.push([type, channel, args]);
+	// we do not want to test this method in this test case, so mock it away
+	tc.processPossibleCommand = function(msg) {
+		events.push([msg.getChannel().getName() + ' command', msg]);
 	};
 
-	for (var i = 0; i < testMessages.length; ++i) {
-		var testCase = testMessages[i];
+	tc.dispatcher.fire = function(type, channel, msg) {
+		events.push([channel.getName() + ' ' + type, msg]);
+	};
 
-		tc.onMessage(testCase[0], testCase[1], testCase[2]);
+	for (var i = 0; i < tests.length; ++i) {
+		var testCase = tests[i];
+		var expected = testCase[1];
 
-		test.deepEqual(events, testCase[3]);
+		tc.process(testCase[0]);
+
+		test.strictEqual(events.length, expected.length);
+
+		for (var j = 0; j < expected.length; ++j) {
+			var type = testChannel.getName() + ' ' + expected[j];
+
+			test.strictEqual(events[j][0], type);
+			test.strictEqual(events[j][1], testCase[0]);
+		}
+
+		events = [];
 	}
 
 	test.done();
 };
-*/
+
+exports.testParseCommand = function(test) {
+	var tc          = buildTwitchClient();
+	var result      = null;
+	var testChannel = new Channel('mychan');
+	var testUser    = new User('testee', testChannel);
+	var tests       = [
+		// non command texts
+		['',                                 null],
+		[' ',                                null],
+		['!',                                null],
+		['nothing here',                     null],
+		['a !command in a sentence',         null],
+		[' !command prefixed with a space',  null],
+		['! space is not allowed',           null],
+		['!#as are special characters',      null],
+		['!!this is illegal as well',        null],
+		['!äöü nope, keep it english place', null],
+		['!invalid%command',                 null],
+
+		// legal commands
+		['!test',          ['test', []]                ],
+		['!TEST ',         ['test', []]                ],
+		['!cmd- foo',      ['cmd-', ['foo']]           ],
+		['!cmd foo  ',     ['cmd',  ['foo']]           ],
+		['!cmd foo  "',    ['cmd',  ['foo', '"']]      ],
+		['!cmd foo  " xy', ['cmd',  ['foo', '"', 'xy']]],
+		['!cmd foo%bar$x', ['cmd',  ['foo%bar$x']]     ]
+	];
+
+	tc.dispatcher.fire = function(type, channel, command, args, message) {
+		result = [type, channel, command, args, message];
+	};
+
+	for (var i = 0; i < tests.length; ++i) {
+		var testCase = new TextMessage(testChannel, testUser, tests[i][0]);
+		var expected = tests[i][1];
+
+		tc.processPossibleCommand(testCase);
+
+		if (expected === null) {
+			test.strictEqual(result, null);
+		}
+		else {
+			test.strictEqual(result[0], EventDispatcher.COMMAND);
+			test.strictEqual(result[1], testCase.getChannel());
+			test.strictEqual(result[2], expected[0]);
+			test.deepEqual  (result[3], expected[1]);
+			test.strictEqual(result[4], testCase);
+		}
+
+		result = null;
+	}
+
+	test.done();
+};

@@ -14,19 +14,19 @@ exports.testSubscribers = function(test) {
 	um.putSubscriber('testchan', 'a_subscriber');
 
 	// trying to get a user that has not been put should return false
-	test.deepEqual(um.isSubscriber('testchan', 'someone_else'), false);
-	test.deepEqual(um.takeSubscriber('testchan', 'someone_else'), false);
+	test.strictEqual(um.isSubscriber('testchan', 'someone_else'), false);
+	test.strictEqual(um.takeSubscriber('testchan', 'someone_else'), false);
 
 	// only the first access should return the subscriber
-	test.deepEqual(um.isSubscriber('testchan', 'a_subscriber'), true);
-	test.deepEqual(um.takeSubscriber('testchan', 'a_subscriber'), true);
-	test.deepEqual(um.isSubscriber('testchan', 'a_subscriber'), false);
-	test.deepEqual(um.takeSubscriber('testchan', 'a_subscriber'), false);
+	test.strictEqual(um.isSubscriber('testchan', 'a_subscriber'), true);
+	test.strictEqual(um.takeSubscriber('testchan', 'a_subscriber'), true);
+	test.strictEqual(um.isSubscriber('testchan', 'a_subscriber'), false);
+	test.strictEqual(um.takeSubscriber('testchan', 'a_subscriber'), false);
 
 	// subscriptions are oly valid for one channel
 	um.putSubscriber('testchan', 'a_subscriber');
-	test.deepEqual(um.isSubscriber('anotherchan', 'a_subscriber'), false);
-	test.deepEqual(um.takeSubscriber('anotherchan', 'a_subscriber'), false);
+	test.strictEqual(um.isSubscriber('anotherchan', 'a_subscriber'), false);
+	test.strictEqual(um.takeSubscriber('anotherchan', 'a_subscriber'), false);
 
 	test.done();
 };
@@ -36,11 +36,11 @@ exports.testGlobalUserStates = function(test) {
 	um.putTurboUser('turbo_turbo');
 
 	// trying to get a user that has not been put should return false
-	test.deepEqual(um.takeTurboUser('non_turbo_user'), false);
+	test.strictEqual(um.takeTurboUser('non_turbo_user'), false);
 
 	// only the first access should return the subscriber
-	test.deepEqual(um.takeTurboUser('turbo_turbo'), true);
-	test.deepEqual(um.takeTurboUser('turbo_turbo'), false);
+	test.strictEqual(um.takeTurboUser('turbo_turbo'), true);
+	test.strictEqual(um.takeTurboUser('turbo_turbo'), false);
 
 	test.done();
 };
@@ -48,7 +48,7 @@ exports.testGlobalUserStates = function(test) {
 exports.testIsOperator = function(test) {
 	var um = new UserManager('someone');
 
-	test.deepEqual(um.isOperator('someone'), true);
+	test.strictEqual(um.isOperator('someone'), true);
 	test.done();
 };
 
