@@ -9,7 +9,11 @@
 
 var TwitchClient    = require('./../lib/TwitchClient.js');
 var Channel         = require('./../lib/Channel.js');
+var User            = require('./../lib/User.js');
 var EventDispatcher = require('./../lib/EventDispatcher.js');
+var TextMessage     = require('./../lib/TextMessage.js');
+var TwitchMessage   = require('./../lib/TwitchMessage.js');
+var ModeMessage     = require('./../lib/ModeMessage.js');
 
 function buildTwitchClient() {
 	var ircClient = {
@@ -129,3 +133,109 @@ exports.testSaySomething = function(test) {
 
 	test.done();
 };
+
+exports.testMessageParsing = function(test) {
+	var tc           = buildTwitchClient();
+	var message      = null;
+	var testChan     = new Channel('mychan');
+	var testMessages = [
+		['some_guy', '#mychan', 'my text!',     new TextMessage(testChan, new User('some_guy', testChan), 'my text!')    ],
+		['some_guy', 'mychan',  'my text!',     new TextMessage(testChan, new User('some_guy', testChan), 'my text!')    ],
+		['some_guy', 'mychan',  '  my text!  ', new TextMessage(testChan, new User('some_guy', testChan), '  my text!  ')],
+
+		['jtv', '#mychan', 'SPECIALUSER test subscriber', new TwitchMessage(testChan, 'SPECIALUSER', ['test', 'subscriber']) ],
+		['jtv', 'mychan',  'something random',            new TwitchMessage(testChan, 'SOMETHING',   ['random'])             ],
+		['jtv', 'mychan',  'foo just subscribed!',        new TwitchMessage(testChan, 'FOO',         ['just', 'subscribed!'])],
+
+		['twitchnotify', '#mychan', 'something random',     new TwitchMessage(testChan, '???',         [])     ],
+		['twitchnotify', 'mychan',  'foo just subscribed!', new TwitchMessage(testChan, 'SUBSCRIBER',  ['foo'])],
+	];
+
+	tc.channels['mychan'] = new Channel('mychan');
+
+	tc.process = function(msg) {
+		message = msg;
+	};
+
+	for (var i = 0; i < testMessages.length; ++i) {
+		var testCase = testMessages[i];
+
+		tc.onMessage(testCase[0], testCase[1], testCase[2]);
+		test.deepEqual(message, testCase[3]);
+
+		message = null;
+	}
+
+	test.done();
+};
+
+exports.testModeChanges = function(test) {
+	var tc           = buildTwitchClient();
+	var msg          = null;
+	var message      = null;
+	var testChan     = new Channel('mychan');
+	var testMessages = [
+		['#mychan', '+o', 'new_mod', new ModeMessage(testChan, '+o', new User('new_mod', testChan))],
+		['mychan',  '-o', 'new_mod', new ModeMessage(testChan, '-o', new User('new_mod', testChan))]
+	];
+
+	tc.channels['mychan'] = new Channel('mychan');
+
+	tc.process = function(msg) {
+		message = msg;
+	};
+
+	for (var i = 0; i < testMessages.length; ++i) {
+		var testCase = testMessages[i];
+
+		// the original IRC library does require this signature:
+		// function(chan, by, mode, username, message)
+		// 'username' however is never filled in for Twitch chats, so the
+		// handler in TwitchClient takes the username from the message arguments.
+		// The same goes for + or -, because we use the same event handler for
+		// both events.
+		// That's why we have to build a proper dummy 'message' object. To save
+		// typing, we do that here instead of manually in the declaration of
+		// testMessages above.
+
+		msg = {
+			args: [testCase[0], testCase[1], testCase[2]]
+		};
+
+		// The mode is only given by its character ("o"), the distinction between
+		// + or - is normally done via separate event handlers.
+		testCase[1] = testCase[1].substring(1);
+
+		tc.onModeChange(testCase[0], 'jtv', testCase[1], undefined, msg);
+		test.deepEqual(message, testCase[3]);
+
+		message = null;
+	}
+
+	test.done();
+};
+
+/*
+exports.testFiringEvents = function(test) {
+	var tc     = buildTwitchClient();
+	var events = [];
+
+	tc.channels['mychan'] = new Channel('mychan');
+
+	tc.process = function(type, channel) {
+		var args = Array.prototype.slice.call(arguments, 2);
+
+		events.push([type, channel, args]);
+	};
+
+	for (var i = 0; i < testMessages.length; ++i) {
+		var testCase = testMessages[i];
+
+		tc.onMessage(testCase[0], testCase[1], testCase[2]);
+
+		test.deepEqual(events, testCase[3]);
+	}
+
+	test.done();
+};
+*/
