@@ -13,15 +13,20 @@ var User    = require('./../lib/User.js');
 
 function buildACL() {
 	var db = {
+		inserted: 0,
+		deleted: 0,
+
 		select: function(table, cols, where, callback) {
 			callback(null, []);
 		},
 
 		insert: function(table, values) {
+			this.inserted++;
 			return true;
 		},
 
 		del: function(table, where) {
+			this.deleted++;
 			return true;
 		}
 	};
@@ -169,6 +174,7 @@ exports.testGetAllowedUsers = function(test) {
 
 	test.deepEqual(acl.getAllowedUsers(channel, ''),    []);
 	test.deepEqual(acl.getAllowedUsers(channel, 'foo'), ['$mods', '$subs']);
+	test.deepEqual(acl.getAllowedUsers(channel, 'FOO'), ['$mods', '$subs']); // permissions are forced to lowercase
 	test.deepEqual(acl.getAllowedUsers(channel, 'bar'), ['fooman']);
 
 	channel = new Channel('test2');
@@ -227,7 +233,11 @@ exports.testIsAllowed = function(test) {
 
 		// does $all work?
 		['dude', {},          'free_for_all', true],
-		['dude', {mod: true}, 'free_for_all', true]
+		['dude', {mod: true}, 'free_for_all', true],
+
+		// lowercased as expected?
+		['SOME_GUY', {}, 'free_for_all', true],
+		['some_guy', {}, 'FREE_FOR_ALL', true],
 	];
 
 	primeACL(acl, 'testchan', [
@@ -242,6 +252,96 @@ exports.testIsAllowed = function(test) {
 
 		test.strictEqual(acl.isAllowed(user, tests[i][2]), tests[i][3]);
 	}
+
+	test.done();
+};
+
+exports.testAllow = function(test) {
+	var acl     = buildACL();
+	var channel = new Channel('testchan');
+
+	primeACL(acl, 'testchan', [
+		['can_do_foo',   '$mods'   ],
+		['can_do_foo',   'some_guy'],
+		['free_for_all', '$all'    ]
+	]);
+
+	// allowing something to the owner is pointless
+	test.strictEqual(acl.allow(channel, 'testchan', 'a_permission'), false);
+
+	// allow something new
+	test.strictEqual(acl.allow(channel, 'someone', 'something'), true);
+	test.strictEqual(acl.db.inserted, 1);
+	test.strictEqual(acl.isAllowed(getUser('someone', 'testchan', {}), 'something'), true);
+
+	// nothing should happen if we grant again
+	test.strictEqual(acl.allow(channel, 'someone', 'something'), false);
+	test.strictEqual(acl.db.inserted, 1);
+	test.strictEqual(acl.isAllowed(getUser('someone', 'testchan', {}), 'something'), true);
+
+	// are user identifiers properly lowercased?
+	test.strictEqual(acl.allow(channel, 'SOMEONE', 'something'), false);
+
+	// permissions are lowercased as well
+	test.strictEqual(acl.allow(channel, 'someone', 'SOMETHING'), false);
+
+	test.done();
+};
+
+exports.testDeny = function(test) {
+	var acl     = buildACL();
+	var channel = new Channel('testchan');
+
+	primeACL(acl, 'testchan', [
+		['can_do_foo',   '$mods'   ],
+		['can_do_foo',   'some_guy'],
+		['free_for_all', '$all'    ]
+	]);
+
+	// try to deny something that has not been granted
+	test.strictEqual(acl.deny(new Channel('nowhere'), 'some_guy', 'can_do_foo'),             false);
+	test.strictEqual(acl.deny(channel,                'some_guy', 'nonexisting_permission'), false);
+	test.strictEqual(acl.deny(channel,                'nobody',   'can_do_foo'),             false);
+
+	// regular deny
+	test.strictEqual(acl.deny(channel, '$mods', 'can_do_foo'), true);
+	test.strictEqual(acl.db.deleted, 1);
+	test.strictEqual(acl.isAllowed(getUser('someone', 'testchan', {mod: true}), 'can_do_foo'), false);
+
+	// lowercased?
+	test.strictEqual(acl.deny(channel, 'SOME_GUY', 'can_do_foo'),   true);
+	test.strictEqual(acl.deny(channel, '$all',     'FREE_FOR_ALL'), true);
+	test.strictEqual(acl.db.deleted, 3);
+
+	test.done();
+};
+
+exports.testDeletePermission = function(test) {
+	var acl     = buildACL();
+	var channel = new Channel('testchan');
+
+	primeACL(acl, 'testchan', [
+		['can_do_foo',   '$mods'   ],
+		['can_do_foo',   'some_guy'],
+		['free_for_all', '$all'    ]
+	]);
+
+	// try to delete something that doesn't exist (method always returns true, because in this case a no-op is okay)
+	test.strictEqual(acl.deletePermission(new Channel('nowhere'), 'can_do_foo'), true);
+	test.strictEqual(acl.db.deleted, 0);
+
+	test.strictEqual(acl.deletePermission(channel, 'nonexisting_permission'), true);
+	test.strictEqual(acl.db.deleted, 0);
+
+	// regular deletion
+	test.strictEqual(acl.deletePermission(channel, 'can_do_foo'), true);
+	test.strictEqual(acl.isAllowed(getUser('someone', 'testchan', {mod: true}), 'can_do_foo'), false);
+	test.strictEqual(acl.isAllowed(getUser('someone', 'testchan', {sub: true}), 'can_do_foo'), false);
+	test.strictEqual(acl.db.deleted, 1);
+
+	// lowercased?
+	test.strictEqual(acl.deletePermission(channel, 'FREE_FOR_ALL'), true);
+	test.strictEqual(acl.db.deleted, 2);
 
 	test.done();
 };
