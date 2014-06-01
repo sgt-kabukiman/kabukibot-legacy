@@ -39,6 +39,7 @@ var
 	GTAContentPlugin        = require('./lib/Plugin/Content/GTA.js'),
 	SDAContentPlugin        = require('./lib/Plugin/Content/SDA.js'),
 	ESAContentPlugin        = require('./lib/Plugin/Content/ESA.js'),
+	CrashContentPlugin      = require('./lib/Plugin/Content/Crash.js'),
 	ChattyContentPlugin     = require('./lib/Plugin/Content/Chatty.js');
 
 ////////////////////////// //////////////////////////////////////////////////////
@@ -80,6 +81,7 @@ bot
 	.addPlugin(new GTAContentPlugin())
 	.addPlugin(new SDAContentPlugin())
 	.addPlugin(new ESAContentPlugin())
+	.addPlugin(new CrashContentPlugin())
 	.addPlugin(new ChattyContentPlugin())
 	.setup()
 	.run();
