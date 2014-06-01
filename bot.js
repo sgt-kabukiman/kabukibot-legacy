@@ -30,6 +30,7 @@ var
 	SysInfoPlugin           = require('./lib/Plugin/SysInfo.js'),
 	DictionaryControlPlugin = require('./lib/Plugin/DictionaryControl.js'),
 	DomainBanPlugin         = require('./lib/Plugin/DomainBan.js'),
+	BanhammerBotPlugin      = require('./lib/Plugin/BanhammerBot.js'),
 	CustomCommandsPlugin    = require('./lib/Plugin/CustomCommands.js'),
 	EmoteCounterPlugin      = require('./lib/Plugin/EmoteCounter/Plugin.js'),
 	HighlightsPlugin        = require('./lib/Plugin/Highlights.js'),
@@ -70,6 +71,7 @@ bot
 	.addPlugin(new SysInfoPlugin())
 	.addPlugin(new DictionaryControlPlugin())
 	.addPlugin(new DomainBanPlugin())
+	.addPlugin(new BanhammerBotPlugin())
 	.addPlugin(new EmoteCounterPlugin())
 	.addPlugin(new HighlightsPlugin())
 	.addPlugin(new HangManPlugin())
