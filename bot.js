@@ -36,6 +36,7 @@ var
 	HighlightsPlugin        = require('./lib/Plugin/Highlights.js'),
 	HangManPlugin           = require('./lib/Plugin/HangMan.js'),
 	SubHypePlugin           = require('./lib/Plugin/SubHype.js'),
+	LastResetPlugin         = require('./lib/Plugin/LastReset.js'),
 	GTAContentPlugin        = require('./lib/Plugin/Content/GTA.js'),
 	SDAContentPlugin        = require('./lib/Plugin/Content/SDA.js'),
 	ESAContentPlugin        = require('./lib/Plugin/Content/ESA.js'),
@@ -77,6 +78,7 @@ bot
 	.addPlugin(new HighlightsPlugin())
 	.addPlugin(new HangManPlugin())
 	.addPlugin(new SubHypePlugin())
+	.addPlugin(new LastResetPlugin())
 	.addPlugin(new CustomCommandsPlugin()) // should preceed only simple content plugins
 	.addPlugin(new GTAContentPlugin())
 	.addPlugin(new SDAContentPlugin())
