@@ -59,6 +59,11 @@ module.exports = {
 			directory: '/full/path/to/the/log/dir'
 		},
 
+		sda: {
+			// Set this to the tracker URL of the currently running event to get auto-updated donations
+			tracker: null // e.g. 'https://gamesdonequick.com/tracker/10' for SGDQ 2014
+		},
+
 		srr: {
 			interval: 15*60,
 			mapping: {
