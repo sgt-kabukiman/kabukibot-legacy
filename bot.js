@@ -22,6 +22,7 @@ var
 	PluginControlPlugin = require('./lib/Plugin/PluginControl.js'),
 
 	// load content-providing and other plugins (these are optional)
+	BlacklistPlugin         = require('./lib/Plugin/Blacklist.js'),
 	ConsoleOutputPlugin     = require('./lib/Plugin/ConsoleOutput.js'),
 	PingPlugin              = require('./lib/Plugin/Ping.js'),
 	LogPlugin               = require('./lib/Plugin/Log/Plugin.js'),
@@ -62,6 +63,7 @@ var config = require(configFile);
 bot
 	.getBot(config, 'debug' in argv ? log.DEBUG : ('warning' in argv ? log.WARNING : log.INFO))
 	.addPlugin(new CorePlugin())
+	.addPlugin(new BlacklistPlugin()) // load this as early as possible, because users will only be blacklisted for all following plugins
 	.addPlugin(new LogPlugin())
 	.addPlugin(new ConsoleOutputPlugin())
 	.addPlugin(new PingPlugin())
