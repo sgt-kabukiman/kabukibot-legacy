@@ -41,6 +41,7 @@ var
 	LastResetPlugin         = require('./lib/Plugin/LastReset.js'),
 	GTAContentPlugin        = require('./lib/Plugin/Content/GTA.js'),
 	SDAContentPlugin        = require('./lib/Plugin/Content/SDA.js'),
+	EGGSContentPlugin       = require('./lib/Plugin/Content/EGGS.js'),
 	ESAContentPlugin        = require('./lib/Plugin/Content/ESA.js'),
 	CrashContentPlugin      = require('./lib/Plugin/Content/Crash.js'),
 	ChattyContentPlugin     = require('./lib/Plugin/Content/Chatty.js');
@@ -86,6 +87,7 @@ bot
 	.addPlugin(new CustomCommandsPlugin()) // should preceed only simple content plugins
 	.addPlugin(new GTAContentPlugin())
 	.addPlugin(new SDAContentPlugin())
+	.addPlugin(new EGGSContentPlugin())
 	.addPlugin(new ESAContentPlugin())
 	.addPlugin(new CrashContentPlugin())
 	.addPlugin(new ChattyContentPlugin())
