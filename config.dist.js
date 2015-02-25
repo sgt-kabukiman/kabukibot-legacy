@@ -68,21 +68,40 @@ module.exports = {
 			interval: 15*60,
 			mapping: {
 				'Grand Theft Auto': {
+					'Grand Theft Auto: London, 1961': {
+						'Any%': 'gta_wr_london61_any'
+					},
+
+					'Grand Theft Auto 2': {
+						'Any%': 'gta_wr_2_any'
+					},
+
 					'Grand Theft Auto III': {
-						'Any%':         'gta_wr_iii_any',
-						'All Missions': 'gta_wr_iii_mis',
-						'100%':         'gta_wr_iii_100'
+						'Any%':                   'gta_wr_iii_any',
+						'All Missions':           'gta_wr_iii_mis',
+						'100%':                   'gta_wr_iii_100',
+						'Kingdom Come':           'gta_wr_iii_kingdomcome',
+						'100 Packages':           'gta_wr_iii_packages',
+						'All Unique Stunt Jumps': 'gta_wr_iii_jumps',
+						'All Rampages':           'gta_wr_iii_rampages'
 					},
 
 					'Grand Theft Auto: Vice City': {
-						'Any%':         'gta_wr_vc_any',
-						'All Missions': 'gta_wr_vc_mis',
-						'100%':         'gta_wr_vc_100'
+						'Any%':          'gta_wr_vc_any',
+						'All Missions':  'gta_wr_vc_mis',
+						'100%':          'gta_wr_vc_100',
+						'100 Packages':  'gta_wr_vc_packages',
+						'All Robberies': 'gta_wr_vc_robberies'
 					},
 
 					'Grand Theft Auto: San Andreas': {
-						'Any%': 'gta_wr_sa_any',
-						'100%': 'gta_wr_sa_100'
+						'Any%':     'gta_wr_sa_any',
+						'100%':     'gta_wr_sa_100',
+						'100 tags': 'gta_wr_sa_tags'
+					},
+
+					'Grand Theft Auto Advance': {
+						'Any%': 'gta_wr_advance_any'
 					},
 
 					'Grand Theft Auto: Liberty City Stories': {
@@ -90,17 +109,38 @@ module.exports = {
 					},
 
 					'Grand Theft Auto: Vice City Stories': {
-						'Any%': 'gta_wr_vcs_any'
+						'Any%':           'gta_wr_vcs_any',
+						'99 Luftballons': 'gta_wr_vcs_luftballons'
 					},
 
 					'Grand Theft Auto IV': {
-						'Any%':     'gta_wr_iv_any',
-						'Classic%': 'gta_wr_iv_classic'
+						'Any%':         'gta_wr_iv_any',
+						'Classic%':     'gta_wr_iv_classic',
+						'Bowling%':     'gta_wr_iv_bowling',
+						'Most Wanted%': 'gta_wr_iv_mostwanted'
+					},
+
+					'Grand Theft Auto: The Lost and Damned': {
+						'Any%': 'gta_wr_tlad_any'
+					},
+
+					'Grand Theft Auto: The Ballad of Gay Tony': {
+						'Any%': 'gta_wr_tbogt_any'
+					},
+
+					'Grand Theft Auto: Chinatown Wars': {
+						'Any%': 'gta_wr_cw_any'
 					},
 
 					'Grand Theft Auto V': {
-						'Any%':     'gta_wr_v_any',
-						'Classic%': 'gta_wr_v_classic'
+						'Any%':                    'gta_wr_v_any',
+						'Classic%':                'gta_wr_v_classic',
+						'Trevor% (classic rules)': 'gta_wr_v_trevor'
+					},
+
+					'Multi-GTA Runs': {
+						'GTA Trilogy any%': 'gta_wr_trilogy_any',
+						'GTA Trilogy 100%': 'gta_wr_trilogy_100'
 					}
 				}
 			}
