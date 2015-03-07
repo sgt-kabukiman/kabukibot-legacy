@@ -139,7 +139,7 @@ module.exports = {
 					},
 
 					'Multi-GTA Runs': {
-						'GTA Trilogy any%': 'gta_wr_trilogy_any',
+						'GTA Trilogy Any%': 'gta_wr_trilogy_any',
 						'GTA Trilogy 100%': 'gta_wr_trilogy_100'
 					}
 				}
