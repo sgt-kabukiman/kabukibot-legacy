@@ -64,6 +64,15 @@ module.exports = {
 			tracker: null // e.g. 'https://gamesdonequick.com/tracker/10' for SGDQ 2014
 		},
 
+		monitor: {
+			channel:   'kabukibot',  // where to perform the heartbeat monitoring
+			message:   '!topic',     // the ping message to send
+			expectBy:  'nightbot',   // only messages from this user are considered valid pongs
+			expectMsg: /-> Topic:/,  // regex that the response must match
+			timeout:   5,            // number of seconds after which a response is not counted anymore
+			filename:  null          // '/full/path/to/a/json/file/to/dump/the/data/in.json'
+		},
+
 		srr: {
 			interval: 15*60,
 			mapping: {

@@ -35,6 +35,7 @@ var
 	CustomCommandsPlugin    = require('./lib/Plugin/CustomCommands.js'),
 	EmoteCounterPlugin      = require('./lib/Plugin/EmoteCounter/Plugin.js'),
 	HighlightsPlugin        = require('./lib/Plugin/Highlights.js'),
+	MonitorPlugin           = require('./lib/Plugin/Monitor.js'),
 	HangManPlugin           = require('./lib/Plugin/HangMan.js'),
 	SubHypePlugin           = require('./lib/Plugin/SubHype.js'),
 	TrollPlugin             = require('./lib/Plugin/Troll.js'),
@@ -80,6 +81,7 @@ bot
 	.addPlugin(new BanhammerBotPlugin())
 	.addPlugin(new EmoteCounterPlugin())
 	.addPlugin(new HighlightsPlugin())
+	.addPlugin(new MonitorPlugin())
 	.addPlugin(new HangManPlugin())
 	.addPlugin(new SubHypePlugin())
 	.addPlugin(new TrollPlugin())
