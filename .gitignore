@@ -1,7 +1,6 @@
-syntax:glob
-node_modules
+node_modules/*
+logs/*
 config.js
 *.sqlite
 *.sqlite3
 version
-logs/*
